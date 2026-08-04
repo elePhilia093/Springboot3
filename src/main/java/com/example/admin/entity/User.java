@@ -18,4 +18,12 @@ public class User {
 
     private String nickname;
 
+    private String email;
+
+    private String phone;
+
+    private String createTime;
+
+    private String updateTime;
+
 }
