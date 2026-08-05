@@ -1,6 +1,7 @@
 package com.example.admin.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.admin.dto.UserQueryDTO;
 import com.example.admin.entity.User;
 import com.example.admin.service.UserService;
@@ -26,6 +27,36 @@ public class UserController {
     public List<User> list(UserQueryDTO dto) {
 
         return userService.list(dto);
+    }
+
+    @GetMapping("/page")
+    public IPage<User> page(
+
+
+            UserQueryDTO dto,
+
+
+            @RequestParam(
+                    defaultValue = "1"
+            )
+            Integer current,
+
+
+            @RequestParam(
+                    defaultValue = "10"
+            )
+            Integer size
+
+
+    ){
+
+
+        return userService.page(
+                dto,
+                current,
+                size
+        );
+
     }
 
     @GetMapping("/get/{id}")
