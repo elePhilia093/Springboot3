@@ -1,6 +1,7 @@
 package com.example.admin.controller;
 
 
+import com.example.admin.dto.UserQueryDTO;
 import com.example.admin.entity.User;
 import com.example.admin.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,9 @@ public class UserController {
 
 
     @GetMapping("/list")
-    public List<User> list(@RequestParam(required = false) String username) {
-        System.out.println("list:" + username);
+    public List<User> list(UserQueryDTO dto) {
 
-        return userService.getUserListByName(username);
+        return userService.list(dto);
     }
 
     @GetMapping("/get/{id}")
