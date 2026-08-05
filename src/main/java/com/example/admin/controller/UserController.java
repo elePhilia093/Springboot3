@@ -39,13 +39,13 @@ public class UserController {
             @RequestParam(
                     defaultValue = "1"
             )
-            Integer current,
+            Integer pageNum,
 
 
             @RequestParam(
                     defaultValue = "10"
             )
-            Integer size
+            Integer pageSize
 
 
     ){
@@ -53,8 +53,8 @@ public class UserController {
 
         return userService.page(
                 dto,
-                current,
-                size
+                pageNum,
+                pageSize
         );
 
     }
