@@ -2,6 +2,7 @@ package com.example.admin.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.admin.common.Result;
 import com.example.admin.dto.UserQueryDTO;
 import com.example.admin.entity.User;
 import com.example.admin.service.UserService;
@@ -25,16 +26,19 @@ public class UserController {
 
 
     @GetMapping("/list")
-    public List<UserVO> list(UserQueryDTO dto) {
+    public Result<List<UserVO>> list(UserQueryDTO dto) {
 
-        return userService.list(dto);
+        return Result.success(
+                userService.list(dto)
+        );
     }
 
     @PostMapping ("/page")
-    public IPage<UserVO> page(@RequestBody UserQueryDTO dto ){
+    public Result<IPage<UserVO>> page(@RequestBody UserQueryDTO dto ){
 
-
-        return userService.page(dto);
+        return Result.success(
+                userService.page(dto)
+        );
 
     }
 
