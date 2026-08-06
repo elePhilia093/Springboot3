@@ -10,6 +10,8 @@ import com.example.admin.dto.UserQueryDTO;
 import com.example.admin.entity.User;
 import com.example.admin.mapper.UserMapper;
 import com.example.admin.service.UserService;
+import com.example.admin.vo.UserVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,153 +23,35 @@ public class UserServiceImpl
         extends ServiceImpl<UserMapper, User>
         implements UserService {
 
-    // @Override   模糊查询写法
-    // public List<User> getUserListByName(String username) {
-    //     if (username == null || username.trim().isEmpty()){
-    //         return this.list();
-    //     } else {
-    //         return this.list(new QueryWrapper<User>().like("username",username));
-    //     }
-    // }
-
     @Override
-    public List<User> list(UserQueryDTO dto) {
+    public List<UserVO> list(UserQueryDTO dto) {
 
 
         LambdaQueryWrapper<User> wrapper =
                 new LambdaQueryWrapper<>();
 
 
-        /**
-         * 用户名模糊查询
-         */
         wrapper.like(
-                StringUtils.hasText(dto.getUsername()),
+                dto.getUsername() != null,
                 User::getUsername,
                 dto.getUsername()
         );
 
 
-        /**
-         * 昵称模糊查询
-         */
-        wrapper.like(
-                StringUtils.hasText(dto.getNickname()),
-                User::getNickname,
-                dto.getNickname()
-        );
+        List<User> users =
+                this.list(wrapper);
 
 
-        /**
-         * 邮箱模糊查询
-         */
-        wrapper.like(
-                StringUtils.hasText(dto.getEmail()),
-                User::getEmail,
-                dto.getEmail()
-        );
-
-
-        /**
-         * 手机号模糊查询
-         */
-        wrapper.like(
-                StringUtils.hasText(dto.getPhone()),
-                User::getPhone,
-                dto.getPhone()
-        );
-
-
-
-        /**
-         * 状态精准查询
-         */
-        wrapper.eq(
-                dto.getStatus()!=null,
-                User::getStatus,
-                dto.getStatus()
-        );
-
-
-
-        /**
-         * 性别精准查询
-         */
-        wrapper.eq(
-                StringUtils.hasText(dto.getGender()),
-                User::getGender,
-                dto.getGender()
-        );
-
-
-
-        /**
-         * 部门精准查询
-         */
-        wrapper.eq(
-                dto.getDeptId()!=null,
-                User::getDeptId,
-                dto.getDeptId()
-        );
-
-
-
-        /**
-         * 年龄范围
-         */
-        wrapper.ge(
-                dto.getMinAge()!=null,
-                User::getAge,
-                dto.getMinAge()
-        );
-
-
-        wrapper.le(
-                dto.getMaxAge()!=null,
-                User::getAge,
-                dto.getMaxAge()
-        );
-
-
-
-        /**
-         * 创建时间范围
-         */
-        wrapper.ge(
-                dto.getStartTime()!=null,
-                User::getCreateTime,
-                dto.getStartTime()
-        );
-
-
-        wrapper.le(
-                dto.getEndTime()!=null,
-                User::getCreateTime,
-                dto.getEndTime()
-        );
-
-
-
-        /**
-         * 默认排序
-         * 创建时间倒序
-         */
-        wrapper.orderByDesc(
-                User::getCreateTime
-        );
-
-
-        return this.list(wrapper);
+        return users.stream()
+                .map(this::convert)
+                .toList();
 
     }
 
     @Override
-    public IPage<User> page(
-            UserQueryDTO dto,
-            Integer current,
-            Integer size
-    ){
-
+    public IPage<UserVO> page(UserQueryDTO dto) {
+        int pageNum = (dto.getPageNum() != null && dto.getPageNum() > 0) ? dto.getPageNum() : 1;
+        int pageSize = (dto.getPageSize() != null && dto.getPageSize() > 0) ? dto.getPageSize() : 10;
 
         /**
          * 创建分页对象
@@ -175,12 +59,7 @@ public class UserServiceImpl
          * current 当前页
          * size 每页数量
          */
-        Page<User> page =
-                new Page<>(
-                        current,
-                        size
-                );
-
+        Page<User> page = new Page<>(pageNum, pageSize);
 
 
         /**
@@ -190,62 +69,66 @@ public class UserServiceImpl
                 new LambdaQueryWrapper<>();
 
 
-
-        /**
-         * 用户名模糊查询
-         */
         wrapper.like(
-                StringUtils.hasText(dto.getUsername()),
-
+                dto.getUsername()!=null,
                 User::getUsername,
-
                 dto.getUsername()
         );
 
 
-
-        /**
-         * 状态查询
-         */
-        wrapper.eq(
-                dto.getStatus()!=null,
-
-                User::getStatus,
-
-                dto.getStatus()
-        );
+        IPage<User> userPage =
+                this.page(page,wrapper);
 
 
 
-        /**
-         * 部门查询
-         */
-        wrapper.eq(
-                dto.getDeptId()!=null,
+        return userPage.convert(this::convert);
 
-                User::getDeptId,
+    }
 
-                dto.getDeptId()
-        );
+    private UserVO convert(User user) {
+        // UserVO vo = new UserVO();
+        //
+        // vo.setId(user.getId());
+        //
+        // vo.setUsername(
+        //         user.getUsername()
+        // );
+        //
+        // vo.setNickname(
+        //         user.getNickname()
+        // );
+        //
+        // vo.setEmail(
+        //         user.getEmail()
+        // );
+        //
+        // vo.setPhone(
+        //         user.getPhone()
+        // );
+        //
+        // vo.setStatus(
+        //         user.getStatus()
+        // );
+        //
+        // vo.setDeptId(
+        //         user.getDeptId()
+        // );
+        //
+        // vo.setCreateTime(
+        //         user.getCreateTime()
+        // );
+        //
+        // vo.setUpdateTime(
+        //         user.getUpdateTime()
+        // );
+        //
+        //
+        // return vo;
 
+        UserVO vo=new UserVO();
 
+        BeanUtils.copyProperties(user,vo);
 
-        /**
-         * 默认排序
-         */
-        wrapper.orderByDesc(
-                User::getCreateTime
-        );
-
-
-
-        /**
-         * 执行分页查询
-         */
-        return this.page(
-                page,
-                wrapper
-        );
-
+        return vo;
     }
 }

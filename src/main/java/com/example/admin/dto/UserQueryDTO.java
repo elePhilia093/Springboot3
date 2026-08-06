@@ -74,4 +74,14 @@ public class UserQueryDTO {
      */
     private LocalDateTime endTime;
 
+    /**
+     * 当前页码
+     */
+    private Integer pageNum = 1;
+
+    /**
+     * 每页显示记录数
+     */
+    private Integer pageSize = 10;
+
 }

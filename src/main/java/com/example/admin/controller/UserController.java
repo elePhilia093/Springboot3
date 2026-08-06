@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.admin.dto.UserQueryDTO;
 import com.example.admin.entity.User;
 import com.example.admin.service.UserService;
+import com.example.admin.vo.UserVO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,38 +25,16 @@ public class UserController {
 
 
     @GetMapping("/list")
-    public List<User> list(UserQueryDTO dto) {
+    public List<UserVO> list(UserQueryDTO dto) {
 
         return userService.list(dto);
     }
 
-    @GetMapping("/page")
-    public IPage<User> page(
+    @PostMapping ("/page")
+    public IPage<UserVO> page(@RequestBody UserQueryDTO dto ){
 
 
-            UserQueryDTO dto,
-
-
-            @RequestParam(
-                    defaultValue = "1"
-            )
-            Integer pageNum,
-
-
-            @RequestParam(
-                    defaultValue = "10"
-            )
-            Integer pageSize
-
-
-    ){
-
-
-        return userService.page(
-                dto,
-                pageNum,
-                pageSize
-        );
+        return userService.page(dto);
 
     }
 
