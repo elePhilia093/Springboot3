@@ -18,7 +18,11 @@ public enum ResultCode {
     UNAUTHORIZED(401,"未登录"),
 
 
-    FORBIDDEN(403,"没有权限");
+    FORBIDDEN(403,"没有权限"),
+
+    USER_NOT_EXIST(10000, "用户不存在"),
+
+    USER_EXIST(10001, "用户名已存在");
 
 
 

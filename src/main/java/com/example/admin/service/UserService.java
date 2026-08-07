@@ -2,7 +2,9 @@ package com.example.admin.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.admin.dto.UserAddDTO;
 import com.example.admin.dto.UserQueryDTO;
+import com.example.admin.dto.UserUpdateDTO;
 import com.example.admin.entity.User;
 import com.example.admin.vo.UserVO;
 
@@ -15,4 +17,8 @@ public interface UserService extends IService<User> {
 
 
     IPage<UserVO> page(UserQueryDTO dto);
+
+    void add(UserAddDTO dto);
+
+    void update(UserUpdateDTO dto);
 }

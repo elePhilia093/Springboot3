@@ -1,5 +1,6 @@
 package com.example.admin.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class UserQueryDTO {
     /**
      * 用户名
      */
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
 
@@ -29,6 +31,7 @@ public class UserQueryDTO {
     /**
      * 手机号
      */
+    @NotBlank(message = "手机号不能为空")
     private String phone;
 
 
@@ -36,6 +39,7 @@ public class UserQueryDTO {
      * 状态
      * 1正常 0禁用
      */
+    @NotBlank(message = "手机号不能为空")
     private Integer status;
 
 

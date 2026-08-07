@@ -20,7 +20,7 @@ public class UserVO {
 
     private Integer deptId;
 
-    private LocalDateTime createTime;
+    private String createTime;
 
-    private LocalDateTime updateTime;
+    private String updateTime;
 }

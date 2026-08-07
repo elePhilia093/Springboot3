@@ -3,10 +3,13 @@ package com.example.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.admin.common.Result;
+import com.example.admin.dto.UserAddDTO;
 import com.example.admin.dto.UserQueryDTO;
+import com.example.admin.dto.UserUpdateDTO;
 import com.example.admin.entity.User;
 import com.example.admin.service.UserService;
 import com.example.admin.vo.UserVO;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,18 +52,23 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody User user) {
-        userService.save(user);
+    public Result<Void> add(@Validated @RequestBody UserAddDTO dto) {
+        userService.add(dto);
+
+        return Result.success();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public Result<Void> delete(@PathVariable("id") Long id) {
+
         userService.removeById(id);
+        return Result.success();
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody User user) {
-        userService.updateById(user);
+    public Result<Void> update(@Validated @RequestBody UserUpdateDTO dto) {
+        userService.update(dto);
+        return Result.success();
     }
 
 }
